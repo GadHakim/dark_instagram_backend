@@ -1,0 +1,51 @@
+{
+  "name": "dark-instagram",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start-prod": "SET \"NODE_ENV=prod\" && nodemon server.js",
+    "start-dev": "SET \"NODE_ENV=dev\" && nodemon server.js",
+    "start-local": "SET \"NODE_ENV=localh\" && nodemon server.js",
+    "start-test": "mocha server-tests/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/VladKozlov/ei-6ame-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/joi": "^15.0.3",
+    "@sendgrid/mail": "^6.4.0",
+    "aws-sdk": "^2.507.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "latest",
+    "check-types": "latest",
+    "config": "^3.2.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "express-fileupload": "^1.1.4",
+    "firebase-admin": "^8.3.0",
+    "geolib": "^3.0.4",
+    "in-app-purchase": "^1.11.4",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.9.1",
+    "pg": "^7.12.0",
+    "rand-token": "^0.4.0",
+    "socket.io": "^2.2.0",
+    "uuid": "latest"
+  },
+  "devDependencies": {
+    "@types/hapi__joi": "^15.0.1",
+    "chai": "^4.2.0",
+    "chai-asserttype": "^1.0.5",
+    "chai-http": "^4.3.0",
+    "chai-like": "^1.1.1",
+    "chai-things": "^0.2.0",
+    "mocha": "^6.1.4",
+    "morgan-body": "^2.4.7",
+    "pm2": "^3.5.1"
+  }
+}
