@@ -19,6 +19,7 @@
     "@hapi/joi": "^15.0.3",
     "@sendgrid/mail": "^6.4.0",
     "aws-sdk": "^2.507.0",
+    "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "latest",
     "check-types": "latest",
