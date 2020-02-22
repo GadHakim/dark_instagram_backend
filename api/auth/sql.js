@@ -4,7 +4,8 @@ const {userStatus} = helper.config;
 const common = {
     findUser: async (connection, email) => {
         const sql = await connection.query(`
-            SELECT first_name,
+            SELECT account_id,
+                   first_name,
                    last_name,
                    email,
                    password

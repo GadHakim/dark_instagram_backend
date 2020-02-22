@@ -18,10 +18,10 @@ const registration = {
         await sql.registration.post.addUser(connection, options);
         user = await sql.common.findUser(connection, options.email);
 
-        options.access_token = helper.token.user.accessToken(user.user_id, options.email);
-        options.refresh_token = helper.token.user.refreshToken(user.user_id);
+        options.access_token = helper.token.user.accessToken(user.account_id, options.email);
+        options.refresh_token = helper.token.user.refreshToken(user.account_id);
 
-        await sql.registration.post.updateUser(connection, user.user_id, options);
+        await sql.registration.post.updateUser(connection, user.account_id, options);
         let result = convertor.registration.post(options);
 
         return {
@@ -43,10 +43,10 @@ const login = {
             return helper.doom.error.passwordNotValid();
         }
 
-        options.access_token = helper.token.user.accessToken(user.user_id, options.email);
-        options.refresh_token = helper.token.user.refreshToken(user.user_id);
+        options.access_token = helper.token.user.accessToken(user.account_id, options.email);
+        options.refresh_token = helper.token.user.refreshToken(user.account_id);
 
-        await sql.login.post.updateUser(connection, user.user_id, options);
+        await sql.login.post.updateUser(connection, user.account_id, options);
         let result = convertor.login.post(options);
 
         return {
