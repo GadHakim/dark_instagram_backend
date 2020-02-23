@@ -41,6 +41,12 @@ const errorCode = {
 
     // Comment is not found.
     commentNotFound: 180,
+
+    // You cannot subscribe to yourself.
+    cannotSubscribeToYourself: 190,
+
+    // You are already subscribed.
+    youAlreadySubscribed: 191,
 };
 
 const error = {
@@ -137,6 +143,26 @@ const error = {
             message: 'Comment is not found.',
             error: "Bad request",
             errorCode: errorCode.commentNotFound
+        }
+    },
+
+    cannotSubscribeToYourself: () => {
+        return {
+            statusCode: 404,
+            success: false,
+            message: 'You cannot subscribe to yourself.',
+            error: "Bad request",
+            errorCode: errorCode.cannotSubscribeToYourself
+        }
+    },
+
+    youAlreadySubscribed: () => {
+        return {
+            statusCode: 404,
+            success: false,
+            message: 'You are already subscribed.',
+            error: "Bad request",
+            errorCode: errorCode.youAlreadySubscribed
         }
     },
 };
