@@ -1,23 +1,65 @@
 const helper = require('../../app/helpers/helper');
 
+const common = {
+    findUserById: async (connection, userId) => {
+        const sql = await connection.query(`
+            SELECT account_id,
+                   email,
+                   first_name,
+                   last_name,
+                   avatar_image_path
+            FROM main.accounts
+            WHERE account_id = $1
+            LIMIT 1
+        `, [userId]);
+
+        return helper.pg.firstResultOrNull(sql);
+    }
+};
+
 const publication = {
-    post: {
-        findUserById: async (connection, userId) => {
+    get: {
+        findPublication: async (connection, publicationId) => {
             const sql = await connection.query(`
                 SELECT account_id,
-                       password,
-                       email,
-                       first_name,
-                       last_name,
-                       avatar_image_path
-                FROM main.accounts
-                WHERE account_id = $1
+                       like_count,
+                       comment
+                FROM main.publications
+                WHERE publication_id = $1
                 LIMIT 1
-            `, [userId]);
+            `, [publicationId]);
 
             return helper.pg.firstResultOrNull(sql);
         },
 
+        findPublicationContent: async (connection, publicationId) => {
+            const sql = await connection.query(`
+                SELECT publication_content_id,
+                       publication_content_type,
+                       publication_content_path
+                FROM main.publications_contents
+                WHERE publication_id = $1
+                ORDER BY publication_content_id
+            `, [publicationId]);
+
+            return helper.pg.resultOrEmptyArray(sql);
+        },
+
+        findPublicationComments: async (connection, publicationId) => {
+            const sql = await connection.query(`
+                SELECT publication_comment_id,
+                       account_id,
+                       comment
+                FROM main.publications_comments
+                WHERE publication_id = $1
+                ORDER BY publication_comment_id
+            `, [publicationId]);
+
+            return helper.pg.resultOrEmptyArray(sql);
+        }
+    },
+
+    post: {
         addPublication: async (connection, userId, options) => {
             let result = await connection.query(`
                         INSERT
@@ -54,5 +96,6 @@ const publication = {
 };
 
 module.exports = {
+    common,
     publication
 };

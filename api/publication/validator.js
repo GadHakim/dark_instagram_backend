@@ -4,6 +4,10 @@ const check = require('check-types');
 const schemas = {
     router: {
         publication: {
+            get: Joi.object().keys({
+                publication_id: Joi.number().required(),
+            }).required(),
+
             post: Joi.object().keys({
                 comment: Joi.string().required(),
                 content: Joi.any().required(),

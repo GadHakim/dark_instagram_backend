@@ -3,8 +3,34 @@ const convertor = require('./convertor');
 const sql = require('./sql');
 
 const publication = {
+    get: async (connection, user, options) => {
+        let profile = await sql.common.findUserById(connection, user.id);
+        if (profile === null) {
+            return helper.doom.error.userNotFound();
+        }
+
+        let publication = await sql.publication.get.findPublication(connection, options.publication_id);
+        let publicationContent = await sql.publication.get.findPublicationContent(connection, options.publication_id);
+        let publicationComments = await sql.publication.get.findPublicationComments(connection, options.publication_id);
+        let publicationUser = await sql.common.findUserById(connection, publication.account_id);
+
+        for (let i = 0; i < publicationComments.length; i++) {
+            let comment = publicationComments[i];
+            let commentUser = await sql.common.findUserById(connection, comment.account_id);
+            comment["account_id"] = undefined;
+            comment["comment_user"] = convertor.extra.publication.convertCommentUser(commentUser);
+        }
+
+        let result = convertor.publication.get(publication, publicationContent, publicationUser, publicationComments);
+
+        return {
+            "success": true,
+            "result": result
+        }
+    },
+
     post: async (connection, user, options) => {
-        let profile = await sql.publication.post.findUserById(connection, user.id);
+        let profile = await sql.common.findUserById(connection, user.id);
         if (profile === null) {
             return helper.doom.error.userNotFound();
         }
@@ -21,7 +47,8 @@ const publication = {
 
         return {
             "success": true,
-            "message": "The publication published successfully."
+            "message": "The publication published successfully.",
+            "publication_id": publicationId,
         }
     }
 };
