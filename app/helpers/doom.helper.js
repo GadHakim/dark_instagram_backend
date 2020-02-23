@@ -36,8 +36,11 @@ const errorCode = {
     // User is not found.
     userNotFound: 160,
 
-    // User is not found.
+    // Publication is not found.
     publicationNotFound: 170,
+
+    // Comment is not found.
+    commentNotFound: 180,
 };
 
 const error = {
@@ -124,6 +127,16 @@ const error = {
             message: 'Publication is not found.',
             error: "Bad request",
             errorCode: errorCode.publicationNotFound
+        }
+    },
+
+    commentNotFound: () => {
+        return {
+            statusCode: 404,
+            success: false,
+            message: 'Comment is not found.',
+            error: "Bad request",
+            errorCode: errorCode.commentNotFound
         }
     },
 };

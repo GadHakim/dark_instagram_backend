@@ -24,4 +24,10 @@ router.post('/comment',
     asyncHandler(controller.comment.post)
 );
 
+router.put('/comment',
+    asyncHandler(helper.middlewares.authUser),
+    helper.validator.main(schemas.router.comment.put),
+    asyncHandler(controller.comment.put)
+);
+
 module.exports = router;

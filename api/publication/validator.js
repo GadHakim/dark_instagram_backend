@@ -18,6 +18,11 @@ const schemas = {
             post: Joi.object().keys({
                 publication_id: Joi.number().required(),
                 comment: Joi.string().required(),
+            }).required(),
+
+            put: Joi.object().keys({
+                comment_id: Joi.number().required(),
+                comment: Joi.string().required(),
             }).required()
         }
     }

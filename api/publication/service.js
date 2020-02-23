@@ -66,6 +66,20 @@ const comment = {
             "success": true,
             "message": "Comment added successfully."
         }
+    },
+
+    put: async (connection, user, options) => {
+        let comment = await sql.comment.put.findComment(connection, user.id, options.comment_id);
+        if (comment == null) {
+            return helper.doom.error.commentNotFound();
+        }
+
+        await sql.comment.put.updateComment(connection, options);
+
+        return {
+            "success": true,
+            "message": "Comment updated successfully."
+        }
     }
 };
 

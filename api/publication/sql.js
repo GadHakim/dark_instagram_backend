@@ -18,13 +18,13 @@ const common = {
 
     findPublication: async (connection, publicationId) => {
         const sql = await connection.query(`
-                SELECT account_id,
-                       like_count,
-                       comment
-                FROM main.publications
-                WHERE publication_id = $1
-                LIMIT 1
-            `, [publicationId]);
+            SELECT account_id,
+                   like_count,
+                   comment
+            FROM main.publications
+            WHERE publication_id = $1
+            LIMIT 1
+        `, [publicationId]);
 
         return helper.pg.firstResultOrNull(sql);
     },
@@ -52,7 +52,7 @@ const publication = {
                        comment
                 FROM main.publications_comments
                 WHERE publication_id = $1
-                ORDER BY publication_comment_id DESC 
+                ORDER BY publication_comment_id DESC
             `, [publicationId]);
 
             return helper.pg.resultOrEmptyArray(sql);
@@ -108,6 +108,34 @@ const comment = {
                 `, [userId,
                     options.publication_id,
                     options.comment
+                ]
+            );
+        },
+    },
+
+    put: {
+        findComment: async (connection, userId, commentId) => {
+            const sql = await connection.query(`
+                SELECT publication_comment_id,
+                       account_id,
+                       comment
+                FROM main.publications_comments
+                WHERE publication_comment_id = $1
+                  AND account_id = $2
+            `, [commentId,
+                userId
+            ]);
+
+            return helper.pg.firstResultOrNull(sql);
+        },
+
+        updateComment: async (connection, options) => {
+            await connection.query(`
+                        UPDATE main.publications_comments
+                        SET comment = $1
+                        WHERE publication_comment_id = $2
+                `, [options.comment,
+                    options.comment_id
                 ]
             );
         },

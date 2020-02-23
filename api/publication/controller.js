@@ -20,6 +20,12 @@ const comment = {
         await helper.controller.sendJson(res, async (connection) => {
             return await service.comment.post(connection, req.user, req.options);
         });
+    },
+
+    put: async (req, res) => {
+        await helper.controller.sendJson(res, async (connection) => {
+            return await service.comment.put(connection, req.user, req.options);
+        });
     }
 };
 
