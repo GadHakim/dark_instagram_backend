@@ -29,5 +29,9 @@ module.exports = {
         } else {
             return rows;
         }
-    }
+    },
+
+    getId: (result, id) => {
+        return result.rows[0][id];
+    },
 };
