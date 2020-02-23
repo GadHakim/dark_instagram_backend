@@ -14,13 +14,10 @@ const common = {
         `, [userId]);
 
         return helper.pg.firstResultOrNull(sql);
-    }
-};
+    },
 
-const publication = {
-    get: {
-        findPublication: async (connection, publicationId) => {
-            const sql = await connection.query(`
+    findPublication: async (connection, publicationId) => {
+        const sql = await connection.query(`
                 SELECT account_id,
                        like_count,
                        comment
@@ -29,9 +26,12 @@ const publication = {
                 LIMIT 1
             `, [publicationId]);
 
-            return helper.pg.firstResultOrNull(sql);
-        },
+        return helper.pg.firstResultOrNull(sql);
+    },
+};
 
+const publication = {
+    get: {
         findPublicationContent: async (connection, publicationId) => {
             const sql = await connection.query(`
                 SELECT publication_content_id,
@@ -52,7 +52,7 @@ const publication = {
                        comment
                 FROM main.publications_comments
                 WHERE publication_id = $1
-                ORDER BY publication_comment_id
+                ORDER BY publication_comment_id DESC 
             `, [publicationId]);
 
             return helper.pg.resultOrEmptyArray(sql);
@@ -95,7 +95,27 @@ const publication = {
     }
 };
 
+const comment = {
+    post: {
+        addComment: async (connection, userId, options) => {
+            await connection.query(`
+                        INSERT
+                        INTO main.publications_comments
+                        (account_id,
+                         publication_id,
+                         comment)
+                        VALUES ($1, $2, $3)
+                `, [userId,
+                    options.publication_id,
+                    options.comment
+                ]
+            );
+        },
+    }
+};
+
 module.exports = {
     common,
-    publication
+    publication,
+    comment
 };

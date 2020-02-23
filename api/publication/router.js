@@ -18,4 +18,10 @@ router.post('/',
     asyncHandler(controller.publication.post)
 );
 
+router.post('/comment',
+    asyncHandler(helper.middlewares.authUser),
+    helper.validator.main(schemas.router.comment.post),
+    asyncHandler(controller.comment.post)
+);
+
 module.exports = router;

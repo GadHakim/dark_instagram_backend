@@ -12,6 +12,13 @@ const schemas = {
                 comment: Joi.string().required(),
                 content: Joi.any().required(),
             }).required()
+        },
+
+        comment: {
+            post: Joi.object().keys({
+                publication_id: Joi.number().required(),
+                comment: Joi.string().required(),
+            }).required()
         }
     }
 };

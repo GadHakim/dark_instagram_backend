@@ -35,6 +35,9 @@ const errorCode = {
 
     // User is not found.
     userNotFound: 160,
+
+    // User is not found.
+    publicationNotFound: 170,
 };
 
 const error = {
@@ -110,7 +113,17 @@ const error = {
             success: false,
             message: 'User is not found.',
             error: "Bad request",
-            errorCode: errorCode.emailAlreadyRegistered
+            errorCode: errorCode.userNotFound
+        }
+    },
+
+    publicationNotFound: () => {
+        return {
+            statusCode: 404,
+            success: false,
+            message: 'Publication is not found.',
+            error: "Bad request",
+            errorCode: errorCode.publicationNotFound
         }
     },
 };

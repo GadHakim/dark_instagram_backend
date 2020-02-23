@@ -9,7 +9,7 @@ const publication = {
             return helper.doom.error.userNotFound();
         }
 
-        let publication = await sql.publication.get.findPublication(connection, options.publication_id);
+        let publication = await sql.common.findPublication(connection, options.publication_id);
         let publicationContent = await sql.publication.get.findPublicationContent(connection, options.publication_id);
         let publicationComments = await sql.publication.get.findPublicationComments(connection, options.publication_id);
         let publicationUser = await sql.common.findUserById(connection, publication.account_id);
@@ -53,6 +53,23 @@ const publication = {
     }
 };
 
+const comment = {
+    post: async (connection, user, options) => {
+        let publication = await sql.common.findPublication(connection, options.publication_id);
+        if (publication == null) {
+            return helper.doom.error.publicationNotFound();
+        }
+
+        await sql.comment.post.addComment(connection, user.id, options);
+
+        return {
+            "success": true,
+            "message": "Comment added successfully."
+        }
+    }
+};
+
 module.exports = {
-    publication
+    publication,
+    comment
 };

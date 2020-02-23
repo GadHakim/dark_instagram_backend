@@ -15,6 +15,15 @@ const publication = {
     }
 };
 
+const comment = {
+    post: async (req, res) => {
+        await helper.controller.sendJson(res, async (connection) => {
+            return await service.comment.post(connection, req.user, req.options);
+        });
+    }
+};
+
 module.exports = {
-    publication
+    publication,
+    comment
 };
