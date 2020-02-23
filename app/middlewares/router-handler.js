@@ -1,11 +1,13 @@
 const auth = require('../../api/auth/router');
 const profile = require('../../api/profile/router');
 const publication = require('../../api/publication/router');
+const people = require('../../api/people/router');
 
 module.exports = {
     userAPI: (app) => {
         app.use('/auth', auth);
         app.use('/profile', profile);
         app.use('/publication', publication);
+        app.use('/people', people);
     },
 };
