@@ -1,9 +1,9 @@
 const helper = require('../../app/helpers/helper');
 const sql = require('./sql');
 
-const subscribers = {
+const subscribe = {
     post: async (connection, user, options) => {
-        let profile = await sql.subscribers.post.findUserById(connection, options.subscriber_id);
+        let profile = await sql.subscribe.post.findUserById(connection, options.subscriber_id);
         if (profile === null) {
             return helper.doom.error.userNotFound();
         }
@@ -12,12 +12,12 @@ const subscribers = {
             return helper.doom.error.cannotSubscribeToYourself();
         }
 
-        let isSubscribe = await sql.subscribers.post.isSubscribe(connection, user.id, options);
+        let isSubscribe = await sql.subscribe.post.isSubscribe(connection, user.id, options);
         if (isSubscribe) {
             return helper.doom.error.youAlreadySubscribed();
         }
 
-        await sql.subscribers.post.subscribe(connection, user.id, options);
+        await sql.subscribe.post.subscribe(connection, user.id, options);
 
         return {
             "success": true,
@@ -27,5 +27,5 @@ const subscribers = {
 };
 
 module.exports = {
-    subscribers
+    subscribe
 };

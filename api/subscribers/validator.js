@@ -2,7 +2,7 @@ const Joi = require('@hapi/joi');
 
 const schemas = {
     router: {
-        subscribers: {
+        subscribe: {
             post: Joi.object().keys({
                 subscriber_id: Joi.number().required(),
             }).required()

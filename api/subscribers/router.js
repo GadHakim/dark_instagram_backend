@@ -8,8 +8,8 @@ const controller = require('./controller');
 
 router.post('/subscribe',
     asyncHandler(helper.middlewares.authUser),
-    validator.main(schemas.router.subscribers.post),
-    asyncHandler(controller.subscribers.post)
+    validator.main(schemas.router.subscribe.post),
+    asyncHandler(controller.subscribe.post)
 );
 
 module.exports = router;

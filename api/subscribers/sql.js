@@ -1,6 +1,6 @@
 const helper = require('../../app/helpers/helper');
 
-const subscribers = {
+const subscribe = {
     post: {
         findUserById: async (connection, userId) => {
             const sql = await connection.query(`
@@ -48,5 +48,5 @@ const subscribers = {
 };
 
 module.exports = {
-    subscribers
+    subscribe
 };
