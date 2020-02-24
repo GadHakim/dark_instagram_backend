@@ -9,6 +9,15 @@ const subscribe = {
     }
 };
 
+const unsubscribe = {
+    post: async (req, res) => {
+        await helper.controller.sendJson(res, async (connection) => {
+            return await service.unsubscribe.post(connection, req.user, req.options);
+        });
+    }
+};
+
 module.exports = {
-    subscribe
+    subscribe,
+    unsubscribe
 };

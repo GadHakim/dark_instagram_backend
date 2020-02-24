@@ -45,8 +45,14 @@ const errorCode = {
     // You cannot subscribe to yourself.
     cannotSubscribeToYourself: 190,
 
+    // You cannot unsubscribe to yourself.
+    cannotUnsubscribeToYourself: 191,
+
     // You are already subscribed.
-    youAlreadySubscribed: 191,
+    youAlreadySubscribed: 192,
+
+    // You are not subscribed yet.
+    youNotSubscribedYet: 193,
 };
 
 const error = {
@@ -156,6 +162,16 @@ const error = {
         }
     },
 
+    cannotUnsubscribeToYourself: () => {
+        return {
+            statusCode: 404,
+            success: false,
+            message: 'You cannot unsubscribe to yourself.',
+            error: "Bad request",
+            errorCode: errorCode.cannotUnsubscribeToYourself
+        }
+    },
+
     youAlreadySubscribed: () => {
         return {
             statusCode: 404,
@@ -163,6 +179,15 @@ const error = {
             message: 'You are already subscribed.',
             error: "Bad request",
             errorCode: errorCode.youAlreadySubscribed
+        }
+    },
+    youNotSubscribedYet: () => {
+        return {
+            statusCode: 404,
+            success: false,
+            message: 'You are not subscribed yet.',
+            error: "Bad request",
+            errorCode: errorCode.youNotSubscribedYet
         }
     },
 };

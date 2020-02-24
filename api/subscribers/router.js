@@ -12,4 +12,10 @@ router.post('/subscribe',
     asyncHandler(controller.subscribe.post)
 );
 
+router.post('/unsubscribe',
+    asyncHandler(helper.middlewares.authUser),
+    validator.main(schemas.router.unsubscribe.post),
+    asyncHandler(controller.unsubscribe.post)
+);
+
 module.exports = router;
