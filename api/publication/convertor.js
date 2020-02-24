@@ -45,7 +45,7 @@ const publication = {
             ...publication,
             "content": extra.publication.convertPublicationContent(publicationContent),
             "post_creator": extra.publication.convertPublicationUser(publicationUser),
-            "publication_comments": publicationComments,
+            "comments": publicationComments,
         }
     }
 };

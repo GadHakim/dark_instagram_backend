@@ -18,6 +18,12 @@ router.post('/',
     asyncHandler(controller.publication.post)
 );
 
+router.get('/all',
+    asyncHandler(helper.middlewares.authUser),
+    helper.validator.main(schemas.router.allPublication.get),
+    asyncHandler(controller.allPublication.get)
+);
+
 router.post('/comment',
     asyncHandler(helper.middlewares.authUser),
     helper.validator.main(schemas.router.comment.post),

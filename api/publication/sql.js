@@ -95,6 +95,53 @@ const publication = {
     }
 };
 
+const allPublication = {
+    get: {
+        findUserPublication: async (connection, userId, options) => {
+            const sql = await connection.query(`
+                SELECT publication_id,
+                       account_id,
+                       like_count,
+                       comment
+                FROM main.publications
+                WHERE account_id = $1
+                ORDER BY publication_id DESC 
+                LIMIT $2
+            `, [userId,
+                options.limit
+            ]);
+
+            return helper.pg.resultOrEmptyArray(sql);
+        },
+
+        findPublicationContent: async (connection, publicationId) => {
+            const sql = await connection.query(`
+                SELECT publication_content_id,
+                       publication_content_type,
+                       publication_content_path
+                FROM main.publications_contents
+                WHERE publication_id = $1
+                ORDER BY publication_content_id
+            `, [publicationId]);
+
+            return helper.pg.resultOrEmptyArray(sql);
+        },
+
+        findPublicationComments: async (connection, publicationId) => {
+            const sql = await connection.query(`
+                SELECT publication_comment_id,
+                       account_id,
+                       comment
+                FROM main.publications_comments
+                WHERE publication_id = $1
+                ORDER BY publication_comment_id DESC
+            `, [publicationId]);
+
+            return helper.pg.resultOrEmptyArray(sql);
+        }
+    },
+};
+
 const comment = {
     post: {
         addComment: async (connection, userId, options) => {
@@ -145,5 +192,6 @@ const comment = {
 module.exports = {
     common,
     publication,
+    allPublication,
     comment
 };

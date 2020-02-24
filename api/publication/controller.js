@@ -15,6 +15,14 @@ const publication = {
     }
 };
 
+const allPublication = {
+    get: async (req, res) => {
+        await helper.controller.sendJson(res, async (connection) => {
+            return await service.allPublication.get(connection, req.user, req.options);
+        });
+    }
+};
+
 const comment = {
     post: async (req, res) => {
         await helper.controller.sendJson(res, async (connection) => {
@@ -31,5 +39,6 @@ const comment = {
 
 module.exports = {
     publication,
+    allPublication,
     comment
 };

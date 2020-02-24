@@ -14,6 +14,12 @@ const schemas = {
             }).required()
         },
 
+        allPublication: {
+            get: Joi.object().keys({
+                limit: Joi.number().positive().required(),
+            }).required(),
+        },
+
         comment: {
             post: Joi.object().keys({
                 publication_id: Joi.number().required(),
