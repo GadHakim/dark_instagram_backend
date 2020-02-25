@@ -24,6 +24,12 @@ router.get('/all',
     asyncHandler(controller.allPublication.get)
 );
 
+router.get('/subscribers',
+    asyncHandler(helper.middlewares.authUser),
+    helper.validator.main(schemas.router.subscribers.get),
+    asyncHandler(controller.subscribers.get)
+);
+
 router.post('/comment',
     asyncHandler(helper.middlewares.authUser),
     helper.validator.main(schemas.router.comment.post),

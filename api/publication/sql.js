@@ -105,7 +105,7 @@ const allPublication = {
                        comment
                 FROM main.publications
                 WHERE account_id = $1
-                ORDER BY publication_id DESC 
+                ORDER BY publication_id DESC
                 LIMIT $2
             `, [userId,
                 options.limit
@@ -139,6 +139,36 @@ const allPublication = {
 
             return helper.pg.resultOrEmptyArray(sql);
         }
+    },
+};
+
+const subscribers = {
+    get: {
+        findSubscribers: async (connection, userId) => {
+            const sql = await connection.query(`
+                SELECT subscriber_id
+                FROM main.subscriptions
+                WHERE account_id = $1
+                ORDER BY subscription_id
+            `, [userId
+            ]);
+
+            return helper.pg.resultOrEmptyArray(sql);
+        },
+
+        findUserPublications: async (connection, userId) => {
+            const sql = await connection.query(`
+                SELECT publication_id,
+                       account_id,
+                       like_count,
+                       comment
+                FROM main.publications
+                WHERE account_id = $1
+                ORDER BY publication_id DESC
+            `, [userId]);
+
+            return helper.pg.resultOrEmptyArray(sql);
+        },
     },
 };
 
@@ -193,5 +223,6 @@ module.exports = {
     common,
     publication,
     allPublication,
+    subscribers,
     comment
 };

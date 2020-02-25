@@ -23,6 +23,14 @@ const allPublication = {
     }
 };
 
+const subscribers = {
+    get: async (req, res) => {
+        await helper.controller.sendJson(res, async (connection) => {
+            return await service.subscribers.get(connection, req.user, req.options);
+        });
+    }
+};
+
 const comment = {
     post: async (req, res) => {
         await helper.controller.sendJson(res, async (connection) => {
@@ -40,5 +48,6 @@ const comment = {
 module.exports = {
     publication,
     allPublication,
+    subscribers,
     comment
 };

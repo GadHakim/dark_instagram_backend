@@ -81,6 +81,42 @@ const allPublication = {
     },
 };
 
+const subscribers = {
+    get: async (connection, user) => {
+        let subscribers = await sql.subscribers.get.findSubscribers(connection, user.id);
+        let result = [];
+
+        for (let i = 0; i < subscribers.length; i++) {
+            let subscriber = subscribers[i];
+
+            let publications = await sql.subscribers.get.findUserPublications(connection, subscriber.subscriber_id);
+            let subscriberResult = [];
+
+            for (let i = 0; i < publications.length; i++) {
+                let publication = publications[i];
+                let publicationContent = await sql.allPublication.get.findPublicationContent(connection, publication.publication_id);
+                let publicationComments = await sql.allPublication.get.findPublicationComments(connection, publication.publication_id);
+                let publicationUser = await sql.common.findUserById(connection, publication.account_id);
+
+                for (let i = 0; i < publicationComments.length; i++) {
+                    let comment = publicationComments[i];
+                    let commentUser = await sql.common.findUserById(connection, comment.account_id);
+                    comment["account_id"] = undefined;
+                    comment["comment_user"] = convertor.extra.publication.convertCommentUser(commentUser);
+                }
+
+                subscriberResult.push(convertor.publication.get(publication, publicationContent, publicationUser, publicationComments));
+            }
+            result.push(subscriberResult);
+        }
+
+        return {
+            "success": true,
+            "result": result
+        }
+    },
+};
+
 const comment = {
     post: async (connection, user, options) => {
         let publication = await sql.common.findPublication(connection, options.publication_id);
@@ -114,5 +150,6 @@ const comment = {
 module.exports = {
     publication,
     allPublication,
+    subscribers,
     comment
 };
