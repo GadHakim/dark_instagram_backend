@@ -90,7 +90,6 @@ const subscribers = {
             let subscriber = subscribers[i];
 
             let publications = await sql.subscribers.get.findUserPublications(connection, subscriber.subscriber_id);
-            let subscriberResult = [];
 
             for (let i = 0; i < publications.length; i++) {
                 let publication = publications[i];
@@ -105,10 +104,14 @@ const subscribers = {
                     comment["comment_user"] = convertor.extra.publication.convertCommentUser(commentUser);
                 }
 
-                subscriberResult.push(convertor.publication.get(publication, publicationContent, publicationUser, publicationComments));
+                result.push(convertor.publication.get(publication, publicationContent, publicationUser, publicationComments));
             }
-            result.push(subscriberResult);
         }
+
+        result.sort((a, b) => {
+            return a.publication_id - b.publication_id;
+        });
+        result.reverse();
 
         return {
             "success": true,
