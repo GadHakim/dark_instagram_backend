@@ -20,7 +20,9 @@ const common = {
         const sql = await connection.query(`
             SELECT account_id,
                    like_count,
-                   comment
+                   comment,
+                   content_height,
+                   content_width
             FROM main.publications
             WHERE publication_id = $1
             LIMIT 1
@@ -75,6 +77,18 @@ const publication = {
             return helper.pg.getId(result, 'publication_id');
         },
 
+        updatePublication: async (connection, publicationId, publicationHeight, publicationWidth) => {
+            await connection.query(`
+                UPDATE main.publications
+                SET content_height  = $2,
+                    content_width = $3
+                WHERE publication_id = $1
+            `, [publicationId,
+                publicationHeight,
+                publicationWidth
+            ]);
+        },
+
         addPublicationContent: async (connection, publicationId, options) => {
             let result = await connection.query(`
                         INSERT
@@ -102,7 +116,9 @@ const allPublication = {
                 SELECT publication_id,
                        account_id,
                        like_count,
-                       comment
+                       comment,
+                       content_height,
+                       content_width
                 FROM main.publications
                 WHERE account_id = $1
                 ORDER BY publication_id DESC
@@ -161,7 +177,9 @@ const subscribers = {
                 SELECT publication_id,
                        account_id,
                        like_count,
-                       comment
+                       comment,
+                       content_height,
+                       content_width
                 FROM main.publications
                 WHERE account_id = $1
                 ORDER BY publication_id DESC

@@ -1,6 +1,9 @@
 const helper = require('../../app/helpers/helper');
 const convertor = require('./convertor');
 const sql = require('./sql');
+const {promisify} = require('util');
+const sizeOf = promisify(require('image-size'));
+const fs = require('fs');
 
 const publication = {
     get: async (connection, user, options) => {
@@ -36,14 +39,30 @@ const publication = {
         }
 
         let publicationId = await sql.publication.post.addPublication(connection, user.id, options);
+        let publicationAverageHeight = Number.MAX_VALUE;
+        let publicationAverageWidth = Number.MAX_VALUE;
 
         for (let i = 0; i < options.content.length; i++) {
             let item = options.content[i];
             options.publication_content_type = 'image';
             options.publication_content_path = helper.aws.getRandomNameFile(item.name);
             await helper.aws.addImage(item, options.publication_content_path);
+            let filePath = helper.config.images.savePath + options.publication_content_path;
+            fs.writeFileSync(filePath, item.data);
+            const dimensions = await sizeOf(filePath);
+
+            if (dimensions.height < publicationAverageHeight) {
+                publicationAverageHeight = dimensions.height;
+            }
+
+            if (dimensions.width < publicationAverageWidth) {
+                publicationAverageWidth = dimensions.width;
+            }
+
             await sql.publication.post.addPublicationContent(connection, publicationId, options);
         }
+
+        await sql.publication.post.updatePublication(connection, publicationId, publicationAverageHeight, publicationAverageWidth);
 
         return {
             "success": true,
