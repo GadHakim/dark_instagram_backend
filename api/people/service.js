@@ -3,7 +3,17 @@ const sql = require('./sql');
 
 const people = {
     get: async (connection, user, options) => {
+        let subscribers = await sql.common.findSubscribers(connection, user.id, options);
+        let subscriberMap = new Map();
+        subscribers.forEach(subscriber => {
+            subscriberMap.set(subscriber.subscriber_id, subscriber);
+        });
+
         let people = await sql.people.get.findPeople(connection, options);
+        people.forEach(person => {
+            let subscriber = subscriberMap.get(person.account_id);
+            person.follower = subscriber != null;
+        });
         let result = convertor.people.get(people);
 
         return {
@@ -15,7 +25,7 @@ const people = {
 
 const subscribers = {
     get: async (connection, user, options) => {
-        let subscribers = await sql.subscribers.get.findSubscribers(connection, user.id, options);
+        let subscribers = await sql.common.findSubscribers(connection, user.id, options);
         let people = [];
         for (let i = 0; i < subscribers.length; i++) {
             let subscriber = subscribers[i];

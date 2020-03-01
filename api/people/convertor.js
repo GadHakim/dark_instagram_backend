@@ -11,6 +11,7 @@ const people = {
                 "first_name": value.first_name,
                 "last_name": value.last_name,
                 "avatar_image_path": value.avatar_image_path ? helper.aws.getImagePath(value.avatar_image_path) : null,
+                "follower": value.follower,
             });
         });
 

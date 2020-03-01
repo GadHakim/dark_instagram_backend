@@ -1,5 +1,21 @@
 const helper = require('../../app/helpers/helper');
 
+const common = {
+    findSubscribers: async (connection, userId, options) => {
+        const sql = await connection.query(`
+                SELECT account_id,
+                       subscriber_id
+                FROM main.subscriptions
+                WHERE account_id = $1
+                LIMIT $2
+            `, [userId,
+            options.limit
+        ]);
+
+        return helper.pg.resultOrEmptyArray(sql);
+    },
+};
+
 const people = {
     get: {
         findPeople: async (connection, options) => {
@@ -15,26 +31,12 @@ const people = {
             `, [options.limit]);
 
             return helper.pg.resultOrEmptyArray(sql);
-        }
+        },
     },
 };
 
 const subscribers = {
     get: {
-        findSubscribers: async (connection, userId, options) => {
-            const sql = await connection.query(`
-                SELECT account_id,
-                       subscriber_id
-                FROM main.subscriptions
-                WHERE account_id = $1
-                LIMIT $2
-            `, [userId,
-                options.limit
-            ]);
-
-            return helper.pg.resultOrEmptyArray(sql);
-        },
-
         findUserById: async (connection, userId) => {
             const sql = await connection.query(`
                 SELECT account_id,
@@ -53,6 +55,7 @@ const subscribers = {
 };
 
 module.exports = {
+    common,
     people,
     subscribers
 };
