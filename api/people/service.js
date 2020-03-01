@@ -9,11 +9,21 @@ const people = {
             subscriberMap.set(subscriber.subscriber_id, subscriber);
         });
 
+        let myIndexForDeleting = null;
         let people = await sql.people.get.findPeople(connection, options);
-        people.forEach(person => {
+        people.forEach((person, index) => {
+            if (person.account_id === user.id) {
+                myIndexForDeleting = index;
+            }
+
             let subscriber = subscriberMap.get(person.account_id);
             person.follower = subscriber != null;
         });
+
+        if (myIndexForDeleting != null) {
+            people.splice(myIndexForDeleting, 1);
+        }
+
         let result = convertor.people.get(people);
 
         return {
