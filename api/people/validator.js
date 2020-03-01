@@ -6,6 +6,12 @@ const schemas = {
             get: Joi.object().keys({
                 limit: Joi.number().required(),
             }).required(),
+        },
+
+        subscribers: {
+            get: Joi.object().keys({
+                limit: Joi.number().required(),
+            }).required(),
         }
     }
 };

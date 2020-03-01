@@ -11,4 +11,10 @@ router.get('/',
     asyncHandler(controller.people.get)
 );
 
+router.get('/subscribers',
+    asyncHandler(helper.middlewares.authUser),
+    helper.validator.main(schemas.router.subscribers.get),
+    asyncHandler(controller.subscribers.get)
+);
+
 module.exports = router;
