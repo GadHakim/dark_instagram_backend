@@ -121,7 +121,7 @@ const allPublication = {
                        content_width
                 FROM main.publications
                 ORDER BY publication_id DESC
-                LIMIT $2
+                LIMIT $1
             `, [
                 options.limit
             ]);
