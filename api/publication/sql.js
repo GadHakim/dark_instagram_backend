@@ -120,10 +120,9 @@ const allPublication = {
                        content_height,
                        content_width
                 FROM main.publications
-                WHERE account_id = $1
                 ORDER BY publication_id DESC
                 LIMIT $2
-            `, [userId,
+            `, [
                 options.limit
             ]);
 
