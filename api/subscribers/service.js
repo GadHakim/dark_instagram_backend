@@ -19,6 +19,11 @@ const subscribe = {
 
         await sql.subscribe.post.subscribe(connection, user.id, options);
 
+        let foundChat = await sql.subscribe.post.findChat(connection, user.id, options);
+        if (foundChat === null) {
+            await sql.subscribe.post.createChat(connection, user.id, options);
+        }
+
         return {
             "success": true,
             "message": "The subscribe is successful."

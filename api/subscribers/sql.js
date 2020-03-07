@@ -1,4 +1,5 @@
 const helper = require('../../app/helpers/helper');
+const uuidv4 = require('uuid/v4');
 
 const common = {
     findUserById: async (connection, userId) => {
@@ -43,6 +44,35 @@ const subscribe = {
                         VALUES ($1, $2);
                 `, [userId,
                     options.subscriber_id
+                ]
+            );
+        },
+
+        findChat: async (connection, userId, options) => {
+            const sql = await connection.query(`
+                SELECT chat_id
+                FROM main.user_chats
+                WHERE user_id = $1
+                  AND subscriber_id = $2
+                LIMIT 1
+            `, [userId,
+                options.subscriber_id
+            ]);
+
+            return helper.pg.firstResultOrNull(sql);
+        },
+
+        createChat: async (connection, userId, options) => {
+            await connection.query(`
+                        INSERT
+                        INTO main.user_chats
+                        (user_id,
+                         subscriber_id,
+                         chat_uuid)
+                        VALUES ($1, $2, $3);
+                `, [userId,
+                    options.subscriber_id,
+                    uuidv4()
                 ]
             );
         },
